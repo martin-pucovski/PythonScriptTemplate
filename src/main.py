@@ -1,4 +1,19 @@
 #!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+
+"""TODO
+
+Write Docstring.
+"""
+
+__author__ = "author_name"
+__copyright__ = "Copyright 2022, some_name"
+__credits__ = ["author_name"]
+__license__ = "GPL"
+__version__ = "1.0.0"
+__maintainer__ = "maintainer_name"
+__email__ = "maintainer_main@domain.com"
+__status__ = "Production"
 
 import configparser
 import datetime
