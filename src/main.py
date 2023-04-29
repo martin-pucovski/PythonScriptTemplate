@@ -26,8 +26,7 @@ import os
 # SET INITIAL CONSTANTS
 
 # Get config file name from argument
-#CONFIG_NAME = sys.argv[1]
-CONFIG_NAME = 'config_TEST.ini'
+CONFIG_NAME = sys.argv[1]
 
 PROJECT_DIRECTORY = Path(os.getcwd())
 LOGS_FOLDER = "logs"
@@ -43,7 +42,8 @@ config.read(config_path)
 config_default = config["DEFAULT"]
 
 # Read Secrets file
-secrets_path = Path(PROJECT_DIRECTORY) / "config" / f"secrets_{config_default['Project_Environment']}.ini"
+secrets_path = Path(PROJECT_DIRECTORY) / "config" / \
+    f"secrets_{config_default['Project_Environment']}.ini"
 config.read(secrets_path)
 secrets_values = config["SECRETS"]
 
@@ -59,19 +59,21 @@ stdout_handler = logging.StreamHandler(sys.stdout)
 handlers = [file_handler, stdout_handler]
 logging.basicConfig(handlers=handlers,
                     encoding='utf-8',
-                    level=os.environ.get("LOGLEVEL", config_default['Loggin_Level']),
+                    level=os.environ.get(
+                        "LOGLEVEL", config_default['Loggin_Level']),
                     format='%(asctime)s:%(levelname)s:%(message)s')
 
 # -------------------------------------------------- #
 
 logging.info("# ------------------------------ #")
 
+
 def main():
     """
     Main function of the script
     """
     logging.info("Script started")
-    
+
 
 if __name__ == "__main__":
     try:
