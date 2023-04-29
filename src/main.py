@@ -7,7 +7,7 @@ Write Docstring.
 """
 
 __author__ = "author_name"
-__copyright__ = "Copyright 2022, some_name"
+__copyright__ = "Copyright 2023, some_name"
 __credits__ = ["author_name"]
 __license__ = "GPL"
 __version__ = "1.0.0"
@@ -18,38 +18,64 @@ __status__ = "Production"
 import configparser
 import datetime
 import logging
+from pathlib import Path
+import sys
+import os
 
+# -------------------------------------------------- #
+# SET INITIAL CONSTANTS
 
-# Create and configure logger
-current_day = datetime.datetime.now().strftime("%Y%m%d")
+# Get config file name from argument
+CONFIG_NAME = sys.argv[1]
 
-logging.basicConfig(filename=f"logs\{current_day}_log.log",
-                    format='%(asctime)s %(levelname)s %(message)s',
-                    filemode='a')
+PROJECT_DIRECTORY = Path(os.getcwd())
+LOGS_FOLDER = "logs"
+DATA_PATH = Path(PROJECT_DIRECTORY) / "data"
 
-# Creating an object
-logger = logging.getLogger()
+# -------------------------------------------------- #
+# READ CONFIG FILE
 
-# Setting the threshold of logger
-logger.setLevel(logging.INFO)
-
-logger.info("####################")
-logger.info("Script started")
-
-# read config.ini file
-logger.info("Reading config")
+# Read main config file
 config = configparser.ConfigParser()
-config.read('config\config.ini')
-config_default = config['DEFAULT']
+config_path = Path(PROJECT_DIRECTORY) / "config" / CONFIG_NAME
+config.read(config_path)
+config_default = config["DEFAULT"]
 
+# Read Secrets file
+secrets_path = Path(PROJECT_DIRECTORY) / "config" / f"secrets_{config_default['Project_Environment']}.ini"
+config.read(secrets_path)
+secrets_values = config["SECRETS"]
+
+# -------------------------------------------------- #
+# SET LOGGING
+
+current_date = datetime.now().strftime("%Y%m%d")
+log_file_name = f"log_{current_date}.log"
+log_file = Path(PROJECT_DIRECTORY) / LOGS_FOLDER / log_file_name
+file_handler = logging.FileHandler(
+    filename=log_file, mode="a", encoding=None, delay=False)
+stdout_handler = logging.StreamHandler(sys.stdout)
+handlers = [file_handler, stdout_handler]
+logging.basicConfig(handlers=handlers,
+                    encoding='utf-8',
+                    level=os.environ.get("LOGLEVEL", config_default['Loggin_Level']),
+                    format='%(asctime)s:%(levelname)s:%(message)s')
+
+# -------------------------------------------------- #
 
 def main():
+    """
+    Main function of the script
+    """
     pass
     
 
 if __name__ == "__main__":
-    main()
+    try:
+        main()
+    except Exception as e:
+        pass
 
 
-logger.info("Script ended")
-logger.info("####################")
+logging.info("Script ended")
+logging.info("####################")
