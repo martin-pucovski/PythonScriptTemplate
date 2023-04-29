@@ -26,7 +26,8 @@ import os
 # SET INITIAL CONSTANTS
 
 # Get config file name from argument
-CONFIG_NAME = sys.argv[1]
+#CONFIG_NAME = sys.argv[1]
+CONFIG_NAME = 'config_TEST.ini'
 
 PROJECT_DIRECTORY = Path(os.getcwd())
 LOGS_FOLDER = "logs"
@@ -49,7 +50,7 @@ secrets_values = config["SECRETS"]
 # -------------------------------------------------- #
 # SET LOGGING
 
-current_date = datetime.now().strftime("%Y%m%d")
+current_date = datetime.datetime.now().strftime("%Y%m%d")
 log_file_name = f"log_{current_date}.log"
 log_file = Path(PROJECT_DIRECTORY) / LOGS_FOLDER / log_file_name
 file_handler = logging.FileHandler(
@@ -63,11 +64,13 @@ logging.basicConfig(handlers=handlers,
 
 # -------------------------------------------------- #
 
+logging.info("# ------------------------------ #")
+
 def main():
     """
     Main function of the script
     """
-    pass
+    logging.info("Script started")
     
 
 if __name__ == "__main__":
@@ -78,4 +81,4 @@ if __name__ == "__main__":
 
 
 logging.info("Script ended")
-logging.info("####################")
+logging.info("# ------------------------------ #")
